@@ -3,6 +3,14 @@
 {% block title %}Manager Dashboard{% endblock title %}
 
 {% block tasks %}
+<div class="p-2">
+      {% if messages %}
+          {% for message in messages %}
+              <div class="px-2 py-1 w-full bg-green-400">{{message}}</div>
+          {% endfor %}
+      {% endif %}
+</div>
+
 <div class="mx-auto mt-8 shadow-sm bg-white rounded-md">
   <div class="grid grid-cols-4 text-gray-500 border-b border-gray-100">
     <div class="p-4">TASK TITLE</div>
@@ -10,97 +18,35 @@
     <div class="p-4">TEAM</div>
     <div class="p-4">CREATED AT</div>
   </div>
+
+  {% comment %} Tasks {% endcomment %}
+  
   <div class="grid grid-cols-4 p-4 gap-6 border-b border-gray-100">
-    <div class="flex items-center gap-3">
+    {% for task in tasks %}
+      <div class="flex items-center gap-3">
       <div class="h-2 w-2 rounded-full bg-green-500"></div>
-      <div><span class="font-medium bg-red-700">Test Low Task</span></div>
+      <div><span class="font-medium">{{task.title}}</span></div>
+      <a href="{% url "update-task" task.id %}" class="px-2 py-1 bg-green-500">Edit</a>
+      <form method="POST" action="{% url "delete-task" task.id %}">
+        {% csrf_token %}
+        <button type="submit" class="px-2 py-1 bg-red-500">Delete</button>
+      </form>
     </div>
     <div>
       <span class="px-3 py-1 bg-blue-100 rounded-full text-blue-600 text-sm"
-        >Low</span
+        >{{task.taskdetails.priority}}</span
       >
     </div>
     <div class="flex -space-x-2">
-      <div
+      {% for emp in task.assigned_to.all %}
+        <div
         class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
       >
-        CA
+        {{emp.name|slice:":1"}}
       </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        AB
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        JK
-      </div>
+      {% endfor %}
     </div>
-    <div><span class="text-gray-500 text-base">9 months ago</span></div>
-  </div>
-  <div class="grid grid-cols-4 p-4 gap-6 border-b border-gray-100">
-    <div class="flex items-center gap-3">
-      <div class="h-2 w-2 rounded-full bg-yellow-500"></div>
-      <div><span class="font-medium">Test Task</span></div>
-    </div>
-    <div>
-      <span class="px-3 py-1 bg-gray-200 rounded-full text-black-500 text-sm"
-        >Normal</span
-      >
-    </div>
-    <div class="flex -space-x-2">
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        AJ
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        EV
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        B
-      </div>
-    </div>
-    <div><span class="text-gray-500 text-base">7 months ago</span></div>
-  </div>
-  <div class="grid grid-cols-4 p-4 gap-6">
-    <div class="flex items-center gap-3">
-      <div class="h-2 w-2 rounded-full bg-red-500"></div>
-      <div><span class="font-medium">Test Task</span></div>
-    </div>
-    <div>
-      <span class="px-3 py-1 bg-red-100 rounded-full text-red-600 text-sm"
-        >High</span
-      >
-    </div>
-    <div class="flex -space-x-2">
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        AJ
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        SS
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        B
-      </div>
-      <div
-        class="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center text-sm border-2 border-white"
-      >
-        CA
-      </div>
-    </div>
-    <div><span class="text-gray-500 text-base">10 months ago</span></div>
-  </div>
+    <div><span class="text-gray-500 text-base">{{task.created_at|timesince}}</span></div>
+    {% endfor %}
 </div>
 {% endblock tasks %}

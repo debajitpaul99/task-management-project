@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static "css/output.css" %}"> {% endcomment %}
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to authentication</h1>
+    <div>
+        <form method='POST'>
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter username">
+            <input type="password" name="password" placeholder="Enter password">
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+</body>
+</html>
