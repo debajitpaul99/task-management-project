@@ -1,0 +1,106 @@
+<nav>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center h-16">
+
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <a
+          href="{% url 'home' %}"
+          class="text-2xl font-bold text-emerald-700 tracking-tight"
+        >
+          MyManager
+        </a>
+      </div>
+
+      <!-- Desktop Links -->
+      <ul class="hidden md:flex items-center space-x-10 text-base font-medium text-gray-700">
+        <li>
+          <a href="{% url 'home' %}" class="hover:text-emerald-600 transition">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'home-feature' %}" class="hover:text-emerald-600 transition">
+            Features
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'home-contact' %}" class="hover:text-emerald-600 transition">
+            Contact
+          </a>
+        </li>
+      </ul>
+
+      <!-- Buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <a
+          href="{% url 'sign-in' %}"
+          class="px-4 py-2 rounded-xl border border-emerald-600 text-emerald-600 hover:bg-emerald-50 transition"
+        >
+          Login
+        </a>
+
+        <a
+          href="{% url 'sign-up' %}"
+          class="px-5 py-2 rounded-xl text-white font-medium bg-gradient-to-r from-emerald-500 to-green-600 hover:scale-105 transition shadow-md"
+        >
+          Sign Up
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="menu-btn" class="md:hidden focus:outline-none">
+        <svg
+          class="w-7 h-7 text-emerald-700"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-t border-emerald-100">
+    <ul class="flex flex-col space-y-4 px-6 py-6 text-gray-700 font-medium">
+
+      <li><a href="{% url 'home' %}" class="hover:text-emerald-600">Home</a></li>
+      <li><a href="{% url 'home-feature' %}" class="hover:text-emerald-600">Features</a></li>
+      <li><a href="{% url 'home-contact' %}" class="hover:text-emerald-600">Contact</a></li>
+
+      <hr class="border-emerald-100" />
+
+      <li>
+        <a
+          href="{% url 'sign-in' %}"
+          class="block text-center px-4 py-2 rounded-xl border border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+        >
+          Login
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="{% url 'sign-up' %}"
+          class="block text-center px-4 py-2 rounded-xl text-white bg-gradient-to-r from-emerald-500 to-green-600"
+        >
+          Sign Up
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>

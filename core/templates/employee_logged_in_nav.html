@@ -1,0 +1,103 @@
+<nav>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex h-16 items-center justify-between">
+
+      <!-- Logo -->
+      <a href="{% url "home" %}" class="text-2xl font-bold text-gray-800">MyManager</a>
+
+      <!-- Desktop Menu -->
+      <ul class="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
+  <li>
+    <a href="{% url "dashboard" %}" class="hover:text-blue-600 transition">
+      Dashboard
+    </a>
+  </li>
+
+  <li>
+    <a href="{% url "view-projects" %}" class="hover:text-blue-600 transition">
+      View Projects
+    </a>
+  </li>
+
+  <li>
+    <a href="{% url "manager-dashboard" %}" class="hover:text-blue-600 transition">
+      View Tasks
+    </a>
+  </li>
+</ul>
+
+
+      <!-- Right -->
+      <div class="flex items-center space-x-4">
+
+        <!-- User Menu -->
+        <div class="relative">
+          <button id="userBtn" class="focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-700"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.5 20.25a7.5 7.5 0 0115 0" />
+            </svg>
+          </button>
+
+          <div id="userMenu"
+            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border">
+            <a href="{% url "user-profile" %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+
+            <form method="POST" action="{% url 'sign-out' %}">
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button id="menuBtn" class="md:hidden">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden pb-4">
+      <ul class="space-y-3 text-gray-700 font-medium">
+        <li><a href="{% url "manager-dashboard" %}" class="block hover:text-blue-600">Dashboard</a></li>
+        <li><a href="{% url "view-projects" %}" class="block hover:text-blue-600">View Projects</a></li>
+        <li><a href="{% url "manager-dashboard" %}" class="block hover:text-blue-600">View Tasks</a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<script>
+  const userBtn = document.getElementById("userBtn");
+  const userMenu = document.getElementById("userMenu");
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  userBtn.addEventListener("click", () => {
+    userMenu.classList.toggle("hidden");
+  });
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!userBtn.contains(e.target) && !userMenu.contains(e.target)) {
+      userMenu.classList.add("hidden");
+    }
+  });
+</script>

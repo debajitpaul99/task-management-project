@@ -1,27 +1,56 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-    <title>Document</title>
-</head>
-<body>
-    <div class="p-4 bg-green-400 mt-8 w-1/2 mx-auto">
-        <div>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="px-2 py-1 {% if 'success' in message.tags %}{% endif %}">{{message}}</div>
-            {% endfor %}
-        {% endif %}
-        </div>
-        <form method="POST">
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-center items-center px-4 py-10 bg-emerald-50 min-h-screen">
+
+    <div class="w-full max-w-2xl bg-white shadow-lg p-8">
+
+        <!-- Header -->
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+            Create New Task
+        </h2>
+
+        <!-- Form -->
+        <form method="POST" id="taskForm" class="space-y-6" enctype="multipart/form-data">
             {% csrf_token %}
-            {{task_form.as_p}}
-            {{task_details_form}}
-            <button type="submit" class="bg-indigo-400 px-3 py-2 text-white rounded-md mt-2">Submit</button>
+
+            <!-- Task Info -->
+            <div>
+                <div class="space-y-4">
+                    {{ task_form.as_p }}
+                </div>
+            </div>
+
+            <!-- Task Details -->
+            <div>
+                <div class="space-y-4">
+                    {{ task_detail_form.as_p }}
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-center gap-3 pt-4">
+                <button
+                    type="submit"
+                    id="submitBtn"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition"
+                >
+                    Create Task
+                </button>
+            </div>
         </form>
     </div>
-</body>
-</html>
+
+    <!-- JS -->
+    <script>
+        const form = document.getElementById("taskForm");
+        const btn = document.getElementById("submitBtn");
+
+        form.addEventListener("submit", () => {
+            btn.disabled = true;
+            btn.innerText = "Submitting...";
+            btn.classList.add("opacity-70", "cursor-not-allowed");
+        });
+    </script>
+
+</div>
+{% endblock content %}

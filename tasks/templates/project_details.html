@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- PROJECT HEADER -->
+
+    <div class="bg-white shadow-sm rounded-xl p-6">
+
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+
+            <div>
+
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">
+                    {{ projects.name }}
+                </h1>
+
+            </div>
+
+            <!-- STATUS BADGE -->
+
+            <div>
+
+                {% if projects.status == "ACTIVE" %}
+                    <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-medium">
+                        Active
+                    </span>
+
+                {% elif project.status == "COMPLETED" %}
+                    <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-medium">
+                        Completed
+                    </span>
+
+                {% else %}
+                    <span class="bg-yellow-100 text-yellow-700 px-4 py-1 rounded-full text-sm font-medium">
+                        On Hold
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECT INFO -->
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">Start Date</p>
+                <p class="font-semibold">
+                    {{ projects.start_date }}
+                </p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">End Date</p>
+                <p class="font-semibold">
+                    {{ projects.end_date|default:"Not set" }}
+                </p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-500">Total Tasks</p>
+                <p class="font-semibold">
+                    {{ projects.total_tasks }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="mt-6">
+
+            <p class="text-sm text-gray-800 font-bold mb-1">
+                Description:
+            </p>
+
+            <p class="text-gray-700">
+                {{ projects.description|default:"No description provided." }}
+            </p>
+
+        </div>
+
+        <div class="mt-5">
+            <a href="{% url "update-project" projects.id %}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">
+                Edit
+            </a>
+        </div>
+        
+    </div>
+
+
+    <!-- TASK LIST -->
+
+    <div class="mt-8">
+
+        <h2 class="text-xl font-semibold mb-4">
+            Tasks in this Project
+        </h2>
+
+
+        <!-- Desktop -->
+
+        <div class="hidden md:block bg-white shadow-sm rounded-xl overflow-hidden">
+
+            <div class="grid grid-cols-4 bg-gray-50 text-gray-500 font-semibold text-sm">
+
+                <div class="p-4">Task</div>
+                <div class="p-4">Priority</div>
+                <div class="p-4">Team</div>
+                <div class="p-4">Status</div>
+
+            </div>
+
+            {% for task in projects.tasks.all %}
+
+            <div class="grid grid-cols-4 border-t items-center">
+
+                <div class="p-4">
+                    <a href="{% url 'task-details' task.id %}"
+                       class="font-medium hover:text-indigo-600">
+
+                        {{ task.title }}
+
+                    </a>
+                </div>
+
+                <div class="p-4">
+
+                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                        {{ task.taskdetails.priority }}
+                    </span>
+
+                </div>
+
+                <div class="p-4 flex -space-x-2">
+
+                    {% for emp in task.assigned_to.all %}
+
+                    <div class="h-8 w-8 bg-indigo-500 text-white rounded-full flex items-center justify-center text-sm border-2 border-white">
+                        {{ emp.first_name|slice:":1" }}
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="p-4">
+
+                    <span class="text-sm text-gray-600">
+                        {{ task.status }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="p-6 text-center text-gray-500">
+                No tasks in this project
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Mobile -->
+
+        <div class="md:hidden space-y-4">
+
+            {% for task in tasks %}
+
+            <div class="bg-white p-4 rounded-xl shadow-sm">
+
+                <div class="font-semibold">
+                    {{ task.title }}
+                </div>
+
+                <div class="text-sm text-gray-500 mt-1">
+                    Status: {{ task.status }}
+                </div>
+
+                <div class="mt-2 flex justify-between">
+
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
+                        {{ task.taskdetails.priority }}
+                    </span>
+
+                    <div class="flex -space-x-2">
+
+                        {% for emp in task.assigned_to.all %}
+
+                        <div class="h-7 w-7 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xs border-2 border-white">
+                            {{ emp.first_name|slice:":1" }}
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="text-center text-gray-500">
+                No tasks in this project
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

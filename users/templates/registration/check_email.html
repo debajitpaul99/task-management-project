@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-emerald-50 min-h-screen flex items-center justify-center px-4 py-8">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-md p-6 sm:p-8 text-center">
+
+        <!-- Icon -->
+        <div class="flex justify-center mb-4">
+            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-blue-100">
+                <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
+            Check your email
+        </h2>
+
+        <!-- Message -->
+        <p class="text-gray-600 mb-6 text-sm sm:text-base">
+            We’ve sent an activation link to your email address.  
+            Please click the link to activate your account.
+        </p>
+
+        <!-- Info Alert -->
+        <div class="flex items-center p-3 mb-6 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 9a1 1 0 102 0V7a1 1 0 10-2 0v2zm0 4a1 1 0 100 2h2a1 1 0 100-2H9z" />
+            </svg>
+            <span>
+                Didn’t receive the email? Check your spam folder.
+            </span>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</div>
+
+{% endblock content %}

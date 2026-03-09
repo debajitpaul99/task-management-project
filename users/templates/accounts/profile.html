@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load custom_filter %}
+{% load static %}
+{% block content %}
+
+<section class="py-12 bg-emerald-50">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <!-- Profile Card -->
+    <div class="bg-white rounded-2xl shadow-md p-8">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
+
+        <!-- Avatar -->
+        <img
+          src="{{ request.user.profile_image.url }}"
+          alt=""
+          class="w-28 h-28 rounded-full"
+        />
+
+        <!-- User Info -->
+        <div class="text-center md:text-left">
+          <h2 class="text-2xl font-bold text-gray-800">
+            {{ username }}
+          </h2>
+          <p class="text-gray-500">{{ email }}</p>
+
+          <!-- Role Badge -->
+          <span
+            class="inline-flex items-center px-3 py-1 mt-3 text-sm font-medium rounded-full bg-emerald-100 text-emerald-700"
+          >
+            👤 {{request.user.groups.first.name}}
+          </span>
+        </div>
+
+      </div>
+
+      <!-- BIO SECTION -->
+      <div class="mt-6 border-b pb-6">
+
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">
+          Bio
+        </h3>
+
+        <p class="text-gray-600 leading-relaxed">
+
+          {% if request.user.bio %}
+            {{ request.user.bio }}
+          {% else %}
+            <span class="text-gray-400 italic">
+              No bio added yet.
+            </span>
+          {% endif %}
+
+        </p>
+
+      </div>
+
+      <!-- Details Section -->
+      <div class="grid md:grid-cols-2 gap-8 mt-8">
+
+        <!-- Personal Info -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            Personal Information
+          </h3>
+
+          <ul class="space-y-3 text-gray-700">
+            <li class="flex justify-between">
+              <span class="font-medium">Full Name</span>
+              <span>{{ full_name }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="font-medium">Username</span>
+              <span>{{ username }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="font-medium">Email</span>
+              <span>{{ email }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="font-medium">Joined</span>
+              <span>{{ date_joined }}</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="font-medium">Last Login</span>
+              <span>{{ last_login|custom_time_format }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Account Actions -->
+        <div>
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            Account Actions
+          </h3>
+
+          <div class="flex flex-col gap-4">
+
+            <a
+              href="{% url "edit-profile" user.id %}"
+              class="inline-flex items-center justify-center px-5 py-3 text-white rounded-xl bg-emerald-600 hover:bg-emerald-700 transition"
+            >
+              ✏️ Edit Profile
+            </a>
+
+            <a
+              href="{% url "change-password" %}"
+              class="inline-flex items-center justify-center px-5 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            >
+              🔒 Change Password
+            </a>
+
+            <form method="POST" action="{% url "sign-out" %}">
+              {% csrf_token %}
+              <button class="w-full inline-flex items-center justify-center px-5 py-3 rounded-xl text-red-600 border border-red-300 hover:bg-red-50 transition"
+                >🚪 Logout</button>
+            </form>
+          
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

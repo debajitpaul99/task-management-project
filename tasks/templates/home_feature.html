@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="py-10 bg-emerald-50">
+    <h1 class="text-4xl font-semibold text-gray-800 text-center mb-10">
+        Our Features & Services
+    </h1>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-10">
+
+      {% comment %} Feature Card {% endcomment %}
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Task Management</h3>
+        <p class="text-gray-600">
+          Create, update, prioritize, and track tasks with ease using a clean interface.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Role-Based Access</h3>
+        <p class="text-gray-600">
+          Separate dashboards for Admin, Manager, and Employee for proper access control.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Team Collaboration</h3>
+        <p class="text-gray-600">
+          Assign tasks, monitor progress, and ensure accountability across teams.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Dashboard Overview</h3>
+        <p class="text-gray-600">
+          View pending, completed, and ongoing tasks at a glance.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Secure Authentication</h3>
+        <p class="text-gray-600">
+          Built with Django authentication to ensure data safety.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-xl shadow-sm bg-white border border-emerald-100 hover:shadow-md transition">
+        <h3 class="text-xl font-semibold mb-2 text-emerald-700">Responsive Design</h3>
+        <p class="text-gray-600">
+          Fully responsive UI that works smoothly on all devices.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="py-16 text-center bg-emerald-100">
+  <h2 class="text-3xl font-bold mb-4 text-emerald-800">
+    Ready to Boost Your Productivity?
+  </h2>
+  <a
+    href="{% url 'sign-up' %}"
+    class="inline-block mt-4 px-8 py-3 rounded-xl text-white
+           bg-gradient-to-r from-emerald-500 to-emerald-700
+           hover:scale-105 transition shadow-lg"
+  >
+    Get Started
+  </a>
+</section>
+
+{% endblock %}

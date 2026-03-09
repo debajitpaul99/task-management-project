@@ -1,16 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 import re
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth import get_user_model
 from tasks.forms import StyledFormMixin
+from django.contrib.auth.forms import SetPasswordForm
+from users.models import UserProfile
 
-class CustomRegistrationForm(forms.ModelForm):
-    password = forms.CharField()
-    confirm_password = forms.CharField()
+User = get_user_model()
+
+class CustomRegistrationForm(StyledFormMixin,forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder":"Enter your password"}))
+    confirm_password = forms.CharField(label="Confirm password", widget=forms.PasswordInput(attrs={"placeholder":"Re-enter your password"}))
     class Meta:
         model = User
         fields = ['username','first_name','last_name', 'email', 'password', 'confirm_password']
-    
     
     def clean_password(self):  # "clean_fieldname" method is used for accessing field error
         errors = []
@@ -56,3 +60,26 @@ class CustomRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class AssignRoleForm(forms.Form):
+    role = forms.ModelChoiceField(
+        queryset=Group.objects.all(),
+        empty_label="Select a Role"
+    )
+
+class CreateGroupForm(StyledFormMixin,forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Assign Permission"
+    )
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']
+
+class EditProfileForm(StyledFormMixin, forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["first_name", "last_name", "email", "bio", "profile_image"]
+
