@@ -16,7 +16,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['task-management-project-jumu.onrender.com']
 
 
 # Application definition
@@ -173,3 +173,7 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.UserProfile"
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://task-management-project-jumu.onrender.com"
+]
