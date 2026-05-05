@@ -14,9 +14,9 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['task-management-project-jumu.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -88,24 +88,24 @@ WSGI_APPLICATION = 'task_management.wsgi.application'
 
 # For postgreSQL
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME', default=''),
-#         'USER': config('DB_USER', default=''),
-#         'PASSWORD': config('DB_PASSWORD', default=''),
-#         'HOST': config('DB_HOST', default='localhost'),
-#         'PORT': config('DB_PORT', cast=int)
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://task_management_db_nzr7_user:2aCTZ85vhR3ZtRVkZ2u5u7gaYZYvk3d7@dpg-d6nr6dk50q8c73ai60tg-a.virginia-postgres.render.com/task_management_db_nzr7',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default=''),
+        'USER': config('DB_USER', default=''),
+        'PASSWORD': config('DB_PASSWORD', default=''),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', cast=int)
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://task_management_db_nzr7_user:2aCTZ85vhR3ZtRVkZ2u5u7gaYZYvk3d7@dpg-d6nr6dk50q8c73ai60tg-a.virginia-postgres.render.com/task_management_db_nzr7',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -166,14 +166,10 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='') 
 
-FRONTEND_URL = 'https://task-management-project-jumu.onrender.com/'
+FRONTEND_URL = 'http://127.0.0.1:8000/'
 
 LOGIN_URL = "/users/sign_in/"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.UserProfile"
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://task-management-project-jumu.onrender.com"
-]

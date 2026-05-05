@@ -101,7 +101,6 @@ class PasswordReset(PasswordResetView):
         context = super().get_context_data(**kwargs)
         context['protocol'] = 'https' if self.request.is_secure() else 'http'
         context['domain'] = self.request.get_host()
-        print(context)
         return context
 
     def form_valid(self, form):
@@ -116,6 +115,15 @@ class PasswordResetConfirm(PasswordResetConfirmView):
     def form_valid(self, form):
         messages.success(self.request, "Your password has been updated successfully")
         return super().form_valid(form)
+    
+class PasswordChange(PasswordChangeView):
+    template_name = "registration/password_change.html"
+    success_url = reverse_lazy("change-password")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Your password has been changed successfully")
+        return super().form_valid(form)
+
     
 @user_passes_test(is_admin, login_url="no-permission")
 def admin_dashboard(request):
