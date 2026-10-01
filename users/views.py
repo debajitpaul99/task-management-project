@@ -147,6 +147,29 @@ def assign_role(request, user_id):
     return render(request, "admin/assign_user.html", {"form":assign_role_form})
 
 @user_passes_test(is_admin, login_url="no-permission")
+def toggle_user_status(request, user_id):
+
+    if request.method == "POST":
+
+        user = User.objects.get(id=user_id)
+
+        user.is_active = not user.is_active
+        user.save()
+
+        if user.is_active:
+            messages.success(
+                request,
+                f"{user.username} has been activated."
+            )
+        else:
+            messages.success(
+                request,
+                f"{user.username} has been deactivated."
+            )
+
+    return redirect("admin-dashboard")
+
+@user_passes_test(is_admin, login_url="no-permission")
 def create_group(request):
     group_form = CreateGroupForm()
 
@@ -158,6 +181,55 @@ def create_group(request):
             return redirect("create-group")
     
     return render(request, "admin/create_group.html", {"group_form":group_form})
+
+@user_passes_test(is_admin, login_url="no-permission")
+def update_group(request, group_id):
+    role = Group.objects.get(id=group_id)
+
+    if request.method == "POST":
+        group_form = CreateGroupForm(
+            request.POST,
+            instance=role
+        )
+
+        if group_form.is_valid():
+            group_form.save()
+
+            messages.success(
+                request,
+                "Role updated successfully."
+            )
+
+            return redirect("show-groups")
+
+    else:
+        group_form = CreateGroupForm(instance=role)
+
+    return render(
+        request,
+        "admin/create_group.html",
+        {
+            "group_form": group_form,
+            "role": role
+        }
+    )
+
+@user_passes_test(is_admin, login_url="no-permission")
+def delete_group(request, group_id):
+    role = Group.objects.get(id=group_id)
+
+    if request.method == "POST":
+        role_name = role.name
+        role.delete()
+
+        messages.success(
+            request,
+            f"{role_name} role deleted successfully."
+        )
+
+        return redirect("show-groups")
+
+    return redirect("show-groups")
 
 @user_passes_test(is_admin, login_url="no-permission")
 def show_groups(request):

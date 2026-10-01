@@ -60,6 +60,10 @@ class CustomRegistrationForm(StyledFormMixin,forms.ModelForm):
         if commit:
             user.save()
         return user
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].required = True
     
 class AssignRoleForm(forms.Form):
     role = forms.ModelChoiceField(

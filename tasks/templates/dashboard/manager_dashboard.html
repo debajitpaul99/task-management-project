@@ -6,7 +6,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
     <!-- TOTAL TASK -->
-    <a href="{% url 'manager-dashboard' %}?type=all"
+    <a href="{% url 'dashboard' %}?type=all"
        class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition block">
 
         <p class="text-sm font-medium text-gray-500">TOTAL TASK</p>
@@ -32,7 +32,7 @@
 
 
     <!-- COMPLETED -->
-    <a href="{% url 'manager-dashboard' %}?type=completed"
+    <a href="{% url 'dashboard' %}?type=completed"
        class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition block">
 
         <p class="text-sm font-medium text-gray-500">COMPLETED</p>
@@ -55,7 +55,7 @@
 
 
     <!-- IN PROGRESS -->
-    <a href="{% url 'manager-dashboard' %}?type=in_progress"
+    <a href="{% url 'dashboard' %}?type=in_progress"
        class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition block">
 
         <p class="text-sm font-medium text-gray-500">IN PROGRESS</p>
@@ -77,7 +77,7 @@
 
 
     <!-- PENDING -->
-    <a href="{% url 'manager-dashboard' %}?type=pending"
+    <a href="{% url 'dashboard' %}?type=pending"
        class="bg-white p-5 rounded-xl shadow-sm hover:shadow-md transition block">
 
         <p class="text-sm font-medium text-gray-500">PENDING</p>

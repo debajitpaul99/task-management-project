@@ -5,99 +5,203 @@
 
   <div class="max-w-7xl mx-auto bg-white shadow-md rounded-xl overflow-hidden">
 
-    <!-- Table container with horizontal scroll -->
+    <!-- Header -->
+    <div class="px-5 py-5 border-b border-gray-100 text-center">
+      <h2 class="text-xl font-bold text-gray-800">
+        User Management
+      </h2>
+    </div>
+
+    <!-- Table -->
     <div class="overflow-x-auto">
 
       <table class="min-w-full text-sm text-left text-gray-700">
 
-        <!-- Header -->
-        <thead class="bg-gray-100 text-xs uppercase text-gray-500">
+        <!-- Table Header -->
+        <thead class="bg-gray-50 text-xs uppercase text-gray-500">
           <tr>
             <th class="px-4 py-3">#</th>
             <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Username</th>
             <th class="px-4 py-3 hidden sm:table-cell">Email</th>
             <th class="px-4 py-3 hidden md:table-cell">User ID</th>
             <th class="px-4 py-3">Role</th>
             <th class="px-4 py-3 text-center">Action</th>
-            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3 text-center">Status</th>
           </tr>
         </thead>
 
-        <!-- Body -->
-        <tbody class="divide-y">
+
+        <!-- Table Body -->
+        <tbody class="divide-y divide-gray-100">
 
           {% for user in users %}
+
           <tr class="hover:bg-gray-50 transition">
 
-            <td class="px-4 py-3 font-medium">
+            <!-- Number -->
+            <td class="px-4 py-4 font-medium">
               {{ forloop.counter }}
             </td>
 
-            <td class="px-4 py-3">
-              <div class="font-medium">
+
+            <!-- Name -->
+            <td class="px-4 py-4">
+
+              <div class="font-medium text-gray-800">
                 {{ user.first_name }} {{ user.last_name }}
               </div>
 
-              <!-- Show email on mobile -->
+              <!-- Mobile Email -->
               <div class="text-xs text-gray-500 sm:hidden">
                 {{ user.email }}
               </div>
 
-              <!-- Show ID on mobile -->
+              <!-- Mobile ID -->
               <div class="text-xs text-gray-400 md:hidden">
                 ID: {{ user.id }}
               </div>
+
             </td>
 
-            <!-- Hidden on small screens -->
-            <td class="px-4 py-3 hidden sm:table-cell">
-              {{ user.email }}
-            </td>
 
-            <td class="px-4 py-3 hidden md:table-cell">
-              {{ user.id }}
-            </td>
-
-            <td class="px-4 py-3">
-              <span class="px-2 py-1 text-xs rounded-full bg-emerald-100 text-emerald-700">
-                {{ user.groups.first.name|default:"No Role" }}
+            <!-- Username -->
+            <td class="px-4 py-4">
+              <span class="font-medium text-gray-700">
+                {{ user.username }}
               </span>
             </td>
 
-            <td class="px-4 py-3">
+
+            <!-- Email -->
+            <td class="px-4 py-4 hidden sm:table-cell">
+              {{ user.email }}
+            </td>
+
+
+            <!-- User ID -->
+            <td class="px-4 py-4 hidden md:table-cell">
+              {{ user.id }}
+            </td>
+
+
+            <!-- Role -->
+            <td class="px-4 py-4">
+
+              <span class="px-2.5 py-1 text-xs rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                {{ user.groups.first.name|default:"No Role" }}
+              </span>
+
+            </td>
+
+
+            <!-- Actions -->
+            <td class="px-4 py-4">
 
               <div class="flex flex-col sm:flex-row gap-2 justify-center">
 
-                <a href="{% url 'assign-role' user.id %}"
-                   class="text-center bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm transition">
-                   Change
+                <!-- Change Role -->
+                <a
+                  href="{% url 'assign-role' user.id %}"
+                  class="text-center bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm transition"
+                >
+                  Change
                 </a>
 
-                <form method="post" action="{% url 'delete-user' user.id %}">
+
+                <!-- Remove User -->
+                <form
+                  method="POST"
+                  action="{% url 'delete-user' user.id %}"
+                  onsubmit="return confirm('Are you sure you want to remove this user?');"
+                >
+
                   {% csrf_token %}
-                  <button type="submit"
-                          class="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm transition">
+
+                  <button
+                    type="submit"
+                    class="w-full sm:w-auto bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition"
+                  >
                     Remove
                   </button>
+
                 </form>
 
               </div>
 
             </td>
 
-            <td class="px-4 py-3">
-              {% if user.is_active %}
-                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                  Active
-                </span>
-              {% else %}
-                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
-                  Inactive
-                </span>
-              {% endif %}
-            </td>
+
+            <!-- Status Toggle -->
+            <!-- Status Toggle -->
+<td class="px-4 py-4">
+
+    <div class="flex flex-col items-center gap-1.5">
+
+        <form
+            method="POST"
+            action="{% url 'toggle-user-status' user.id %}"
+            {% if user.is_active %}
+            onsubmit="return confirm('Are you sure you want to deactivate {{ user.username|escapejs }}? This user will no longer be able to log in.');"
+            {% endif %}
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200
+                {% if user.is_active %}
+                    bg-emerald-500
+                {% else %}
+                    bg-gray-300
+                {% endif %}"
+                title="{% if user.is_active %}Deactivate user{% else %}Activate user{% endif %}"
+            >
+
+                <span
+                    class="inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-200
+                    {% if user.is_active %}
+                        translate-x-6
+                    {% else %}
+                        translate-x-1
+                    {% endif %}"
+                ></span>
+
+            </button>
+
+        </form>
+
+
+        <!-- Status Text -->
+        {% if user.is_active %}
+
+            <span class="text-xs font-medium text-emerald-600">
+                Active
+            </span>
+
+        {% else %}
+
+            <span class="text-xs font-medium text-gray-500">
+                Inactive
+            </span>
+
+        {% endif %}
+
+    </div>
+
+</td>
 
           </tr>
+
+          {% empty %}
+
+          <tr>
+            <td colspan="8" class="px-4 py-10 text-center text-gray-500">
+              No users found.
+            </td>
+          </tr>
+
           {% endfor %}
 
         </tbody>

@@ -22,7 +22,6 @@ def is_employee(user):
 
 
 @login_required
-@permission_required("tasks.view_task", login_url="no-permission")
 def manager_dashboard(request):
     tasks = Task.objects.select_related("taskdetails").prefetch_related("assigned_to").all()
     counts = Task.objects.aggregate(
@@ -49,10 +48,6 @@ def manager_dashboard(request):
         "counts" : counts
     }
     return render(request,'dashboard/manager_dashboard.html',context)
-
-@user_passes_test(is_employee, login_url="no-permission")
-def employee_dashboard(request):
-    return render(request,'dashboard/user_dashboard.html')
 
 class CreateTask(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = "tasks.add_task"
@@ -123,14 +118,14 @@ class UpdateTask(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 @method_decorator(permission_required("tasks.delete_task", login_url="no-permission"), name="dispatch")
 class DeleteTask(DeleteView):
     model = Task
-    success_url = reverse_lazy("manager-dashboard")
+    success_url = reverse_lazy("dashboard")
     pk_url_kwarg = "task_id"
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
         messages.success(request, "Task Deleted Successfully")
-        return redirect("manager-dashboard")
+        return redirect("dashboard")
     
 
 @method_decorator(login_required, name="dispatch")
@@ -248,9 +243,9 @@ class ViewProject(LoginRequiredMixin,ListView):
 
 def dashboard(request):
     if is_manager(request.user):
-        return redirect("manager-dashboard")
+        return redirect("dashboard")
     elif is_employee(request.user):
-        return redirect("employee-dashboard")
+        return redirect("dashboard")
     elif is_admin(request.user):
         return redirect("admin-dashboard")
     return redirect("no-permission")

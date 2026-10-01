@@ -1,42 +1,37 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Contact us · MyManager{% endblock %}
 {% block content %}
+<section class="relative overflow-hidden bg-emerald-50">
+  <div class="absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_20%_20%,rgba(24,166,111,.12),transparent_32%),radial-gradient(circle_at_85%_10%,rgba(56,189,248,.10),transparent_30%)]"></div>
+  <div class="relative mx-auto max-w-7xl px-5 pb-16 pt-16 lg:px-8 lg:pb-24 lg:pt-20">
+    <div class="mx-auto max-w-2xl text-center"><span class="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[.18em] text-brand-700 shadow-sm"><span class="h-2 w-2 rounded-full bg-brand-500"></span> We’re here to help</span><h1 class="mt-5 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Let’s start a conversation.</h1><p class="mt-4 text-lg leading-8 text-slate-500">Have a question, an idea, or feedback to share? Send us a note and we’ll get back to you.</p></div>
 
-<!-- Contact Section -->
-<section class="py-10 bg-emerald-50">
-    <h1 class="text-4xl font-semibold text-gray-800 text-center mb-10">
-        Contact Us
-    </h1>
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+    <div class="mt-14 grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(16,33,28,.1)] lg:grid-cols-[.78fr_1.22fr]">
+      <aside class="relative overflow-hidden bg-[#296b5a] p-8 text-white sm:p-10 lg:p-12">
+        <div class="absolute -bottom-28 -right-28 h-80 w-80 rounded-full border-[60px] border-emerald-400/10"></div>
+        <div class="relative"><p class="text-xs font-bold uppercase tracking-[.18em] text-emerald-300">Contact details</p><h2 class="mt-3 font-display text-3xl font-extrabold">We’d love to hear from you.</h2><p class="mt-4 leading-7 text-emerald-50/65">Whether you need support or want to explore a collaboration, there’s a real person on the other side.</p></div>
+        <div class="relative mt-10 space-y-5">
+          <a href="mailto:support@mymanager.app" class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[.05] p-4 transition hover:bg-white/10"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-400/15 text-emerald-300"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke-width="1.8"/></svg></span><span><b class="block text-sm">Email us</b><span class="mt-1 block text-sm text-emerald-100/55">support@mymanager.app</span></span></a>
+          <div class="flex items-start gap-4 p-4"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sky-400/15 text-sky-300"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.8" d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5" stroke-width="1.8"/></svg></span><span><b class="block text-sm">Based in</b><span class="mt-1 block text-sm text-emerald-100/55">Bangladesh · Working globally</span></span></div>
+          <div class="flex items-start gap-4 p-4"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-400/15 text-amber-300"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke-width="1.8" stroke-linecap="round"/></svg></span><span><b class="block text-sm">Support hours</b><span class="mt-1 block text-sm text-emerald-100/55">Monday–Friday · 9:00–18:00</span></span></div>
+        </div>
+        <div class="relative mt-10 rounded-2xl bg-emerald-400/10 p-4 text-sm leading-6 text-emerald-100/70"><b class="text-emerald-200">Typical response time:</b> within one business day.</div>
+      </aside>
 
-    <!-- Contact Info -->
-    <div>
-      <h2 class="text-2xl font-bold mb-4">Get in Touch</h2>
-      <p class="text-gray-600 mb-6">
-        Reach out to us for support, feedback, or collaboration.
-      </p>
-
-      <ul class="space-y-4 text-gray-700">
-        <li>📧 Email: <span class="font-medium">support@mymanager.app</span></li>
-        <li>📍 Location: Bangladesh</li>
-        <li>⏰ Support Hours: Mon – Fri (9 AM – 6 PM)</li>
-      </ul>
-    </div>
-
-    <!-- Contact Form -->
-    <form method="POST" class="bg-gray-50 p-6 rounded-xl shadow-sm space-y-4">
-      {% csrf_token %}
-      
-      <div class="space-y-4">
-          {{ contact_form.as_p }}
+      <div class="p-7 sm:p-10 lg:p-12">
+        <h2 class="mt-2 font-display text-2xl font-extrabold text-green-600">Send a Message</h2>
+        {% if contact_form.non_field_errors %}<div class="mt-5 rounded-xl border border-rose-100 bg-rose-50 p-4 text-sm text-rose-700">{{ contact_form.non_field_errors }}</div>{% endif %}
+        <form method="post" class="mt-7 space-y-5" novalidate>
+          {% csrf_token %}
+          <div><label for="{{ contact_form.full_name.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-700">Full name</label>{% render_field contact_form.full_name class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-ink outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100" autocomplete="name" placeholder="How should we address you?" %}{% for error in contact_form.full_name.errors %}<p class="mt-1.5 text-xs font-semibold text-rose-600">{{ error }}</p>{% endfor %}</div>
+          <div><label for="{{ contact_form.email.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-700">Email address</label>{% render_field contact_form.email class="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-ink outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100" autocomplete="email" placeholder="you@company.com" %}{% for error in contact_form.email.errors %}<p class="mt-1.5 text-xs font-semibold text-rose-600">{{ error }}</p>{% endfor %}</div>
+          <div><div class="mb-2 flex items-center justify-between"><label for="{{ contact_form.message.id_for_label }}" class="text-sm font-bold text-slate-700">Your message</label><span class="text-xs text-slate-400">A few details help</span></div>{% render_field contact_form.message class="min-h-[150px] w-full resize-y rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-ink outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100" rows="5" placeholder="Tell us what’s on your mind..." %}{% for error in contact_form.message.errors %}<p class="mt-1.5 text-xs font-semibold text-rose-600">{{ error }}</p>{% endfor %}</div>
+          <button type="submit" class="group flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3.5 font-bold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-brand-700">Send message <span class="transition group-hover:translate-x-1">→</span></button>
+        </form>
+        <p class="mt-5 text-center text-xs text-slate-400">We only use your details to respond to this message.</p>
       </div>
-
-      <button type="submit" class="w-full py-3 rounded-xl text-white
-           bg-gradient-to-r from-emerald-500 to-emerald-700">
-        Send Message
-      </button>
-    </form>
-
+    </div>
   </div>
 </section>
-
 {% endblock %}

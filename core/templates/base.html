@@ -1,156 +1,147 @@
-{% load group %}
+{% load group static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyManager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-  </head>
-  <body class="bg-emerald-50 text-gray-800">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MyManager — a role-based workspace for projects, tasks, and team progress.">
+  <title>{% block title %}MyManager · Team workspace{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
   <script>
-    window.addEventListener("load", function () {
-      const messages = document.querySelectorAll(".message-box");
-
-      setTimeout(() => {
-        messages.forEach((msg) => {
-          setTimeout(() => msg.remove(), 500);
-        });
-      }, 3000);
-    });
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['DM Sans', 'sans-serif'], display: ['Manrope', 'sans-serif'] }, colors: { ink: '#10211c', brand: { 50: '#effcf6', 100: '#d8f7e8', 500: '#18a66f', 600: '#0c8b5b', 700: '#087047', 900: '#063c29' } }, boxShadow: { soft: '0 18px 50px rgba(16, 33, 28, .08)' } } } }
   </script>
-    <!-- Messages -->
-    {% if messages %}
-      <div id="message-container" class="absolute left-1/2 -translate-x-1/2 top-5 z-[9999] space-y-3">
-        {% for message in messages %}
-          <div class="
-            message-box
-            px-5 py-3 rounded-lg shadow-lg text-sm font-medium text-center
-            transition-opacity duration-500 ease-in-out
-            {% if message.tags == 'success' %}
-              bg-green-400 text-white
-            {% elif message.tags == 'error' %}
-              bg-red-500 text-white
-            {% elif message.tags == 'warning' %}
-              bg-yellow-400 text-black
-            {% else %}
-              bg-blue-500 text-white
-            {% endif %}
-          ">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <header class="sticky top-0 z-50 bg-gray-50 border-b border-gray-200">
-      <!-- Navbar -->
-       {% if request.user.is_authenticated %}
-
-          {% if request.user|group:"Admin" %}
-              {% include "admin_logged_in_nav.html" %}
-
-          {% elif request.user|group:"Manager" %}
-              {% include "manager_logged_in_nav.html" %}
-
-          {% elif request.user|group:"Employee" %}
-              {% include "employee_logged_in_nav.html" %}
-
-          {% elif request.user|group:"User" %}
-              {% include "user_logged_in_nav.html" %}
-          {% endif %}
-
+  
+</head>
+<body class="min-h-screen bg-[#f7faf8] font-sans text-slate-700">
+  {% if messages %}
+  <div class="fixed left-1/2 top-6 z-[100] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 space-y-3">
+    
+    {% for message in messages %}
+      <div
+        class="message-box flex items-center justify-center rounded-xl border px-4 py-3 text-center text-sm font-semibold shadow-lg backdrop-blur
+        {% if message.tags == 'error' %}
+          border-rose-200 bg-rose-50 text-rose-700
+        {% elif message.tags == 'warning' %}
+          border-amber-200 bg-amber-50 text-amber-700
+        {% elif message.tags == 'success' %}
+          border-emerald-200 bg-emerald-50 text-emerald-700
         {% else %}
-            {% include "non_logged_in_nav.html" %}
-      {% endif %}
+          border-emerald-200 bg-emerald-50 text-emerald-700
+        {% endif %}"
+      >
+        {{ message }}
+      </div>
+    {% endfor %}
 
-    </header>
-    
-    <!-- Features Section -->
-    <main class="min-h-screen">
-      {% if request.user|group:"User" %}
-          {% include "user_view.html" %}
-      {% else %}
-        {% block content %} 
+  </div>
+{% endif %}
 
-      
-        {% endblock content %}
-      {% endif %}
-    
-    </main>
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-      <div class="container mx-auto px-6">
-        <div class="flex flex-wrap justify-between">
-          <div class="w-full md:w-1/4 mb-8 md:mb-0">
-            <h3 class="text-lg font-semibold mb-4">MyManager</h3>
-            <a href="home"></a>
-            <p class="text-gray-400">
-              Empowering teams with efficient task management solutions.
-            </p>
-          </div>
-          <div class="w-full md:w-1/4 mb-8 md:mb-0">
-            <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul class="text-gray-400 space-y-2">
-              <li><a href="{% url "home" %}" class="hover:text-white">Home</a></li>
-              <li><a href="{% url "home-feature" %}" class="hover:text-white">Features</a></li>
-              <li><a href="{% url "home-contact" %}" class="hover:text-white">Contact</a></li>
-            </ul>
-          </div>
-          <div class="w-full md:w-1/4 mb-8 md:mb-0">
-            <h4 class="text-lg font-semibold mb-4">Connect</h4>
-            <ul class="text-gray-400 space-y-2">
-              <li><a href="#" class="hover:text-white">Twitter</a></li>
-              <li><a href="#" class="hover:text-white">LinkedIn</a></li>
-              <li><a href="#" class="hover:text-white">Facebook</a></li>
-            </ul>
-          </div>
-          <div class="w-full md:w-1/4">
-            <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
-            <form class="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                class="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-l-md focus:outline-none"
-                required
-              />
-              <button
-                type="submit"
-                class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-        <div
-          class="border-t border-gray-700 mt-12 pt-8 text-sm text-center text-gray-400"
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
+    <nav class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8" aria-label="Primary navigation">
+      <p class="flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight text-emerald-500">
+        MyManager
+      </p>
+
+      <div class="hidden items-center gap-1 md:flex">
+        {% if request.user.is_authenticated %}
+          {% if request.user|group:"Admin" %}
+            <a href="{% url 'admin-dashboard' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Dashboard</a>
+            <a href="{% url 'show-groups' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Role Control</a>
+            <a href="{% url 'create-group' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Create Role</a>
+            <a href="{% url 'create-task' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Create task</a>
+            <a href="{% url 'create-project' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Create project</a>
+            <a href="{% url 'view-projects' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Projects</a>
+            <a href="{% url 'dashboard' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-violet-50 hover:text-violet-700">Tasks</a>
+          {% elif request.user|group:"Manager" %}
+            <a href="{% url 'dashboard' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-brand-50 hover:text-brand-700">Tasks</a>
+            <a href="{% url 'view-projects' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-brand-50 hover:text-brand-700">Projects</a>
+            <a href="{% url 'create-task' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-brand-50 hover:text-brand-700">Create task</a>
+            <a href="{% url 'create-project' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-brand-50 hover:text-brand-700">Create project</a>
+          {% elif request.user|group:"Employee" %}
+            <a href="{% url 'dashboard' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-sky-50 hover:text-sky-700">Tasks</a>
+            <a href="{% url 'view-projects' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-sky-50 hover:text-sky-700">Projects</a>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'home' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-slate-100">Home</a>
+          <a href="{% url 'home-feature' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-slate-100">Features</a>
+          <a href="{% url 'home-contact' %}" class="rounded-lg px-3.5 py-2 text-sm font-semibold hover:bg-slate-100">Contact</a>
+        {% endif %}
+      </div>
+
+      <div class="hidden items-center gap-3 md:flex">
+        {% if request.user.is_authenticated %}
+        <a
+          href="{% url 'user-profile' %}"
+          class="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-100"
         >
-          &copy; 2026 MyManager. All rights reserved.
+          Profile
+        </a>
+
+        <form method="post" action="{% url 'sign-out' %}">{% csrf_token %}<button class="w-full rounded-xl bg-emerald-600 px-4 py-2.5 text-center text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700 active:bg-emerald-800">Log out</button></form>
+        {% else %}
+        <a href="{% url 'sign-in' %}" class="rounded-xl px-4 py-2.5 text-sm font-bold text-ink hover:bg-slate-100">Sign in</a>
+        <a href="{% url 'sign-up' %}" class="rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-brand-700">Sign Up</a>
+        {% endif %}
+      </div>
+
+      <button id="nav-toggle" class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 md:hidden" aria-label="Open navigation" aria-expanded="false">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </nav>
+    <div id="mobile-nav" class="hidden border-t border-slate-100 bg-white px-5 py-5 md:hidden">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 text-sm font-semibold">
+        {% if request.user.is_authenticated %}
+          {% if request.user|group:"Admin" %}<a href="{% url 'admin-dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-violet-50">Control center</a><a href="{% url 'show-groups' %}" class="rounded-xl px-3 py-2.5 hover:bg-violet-50">Roles</a>{% elif request.user|group:"Manager" %}<a href="{% url 'dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-brand-50">Overview</a><a href="{% url 'create-task' %}" class="rounded-xl px-3 py-2.5 hover:bg-brand-50">Create task</a>{% elif request.user|group:"Employee" %}<a href="{% url 'dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-sky-50">My work</a>{% endif %}
+          {% if not request.user|group:"User" %}<a href="{% url 'view-projects' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Projects</a>{% endif %}
+          <a href="{% url 'user-profile' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Profile</a>
+          <form method="post" action="{% url 'sign-out' %}">{% csrf_token %}<button class="w-full rounded-xl px-3 py-2.5 text-left text-rose-600 hover:bg-rose-50">Log out</button></form>
+        {% else %}
+          <a href="{% url 'home' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Home</a>
+          <a href="{% url 'home-feature' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Features</a>
+          <a href="{% url 'home-contact' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Contact</a>
+          <a href="{% url 'sign-in' %}" class="mt-2 rounded-xl border border-slate-200 px-3 py-2.5 text-center">Sign in</a>
+          <a href="{% url 'sign-up' %}" class="rounded-xl bg-ink px-3 py-2.5 text-center text-white">Get started</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="min-h-[calc(100vh-72px)] bg-emerald-50">
+    {% if request.user|group:"User" %}{% include "user_view.html" %}{% else %}{% block content %}{% endblock %}{% endif %}
+  </main>
+
+  <footer class="bg-gray-800 py-12 text-white">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-wrap justify-between gap-y-8">
+        <div class="w-full md:w-[22%]">
+          <h3 class="mb-4 font-display text-lg font-bold">MyManager</h3>
+          <p class="leading-6 text-gray-400">Empowering teams with efficient task management solutions.</p>
+        </div>
+        <div class="w-full md:w-[18%]">
+          <h4 class="mb-4 text-lg font-semibold">Quick Links</h4>
+          <ul class="space-y-2 text-gray-400"><li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li><li><a href="{% url 'home-feature' %}" class="hover:text-white">Features</a></li><li><a href="{% url 'home-contact' %}" class="hover:text-white">Contact</a></li></ul>
+        </div>
+        <div class="w-full md:w-[18%]">
+          <h4 class="mb-4 text-lg font-semibold">Connect</h4>
+          <ul class="space-y-2 text-gray-400"><li><a href="#" class="hover:text-white">Twitter</a></li><li><a href="#" class="hover:text-white">LinkedIn</a></li><li><a href="#" class="hover:text-white">Facebook</a></li></ul>
+        </div>
+        <div class="w-full md:w-[30%]">
+          <h4 class="mb-4 text-lg font-semibold">Newsletter</h4>
+          <form class="flex"><input type="email" placeholder="Your email" aria-label="Email address" class="min-w-0 w-full rounded-l-md border-0 bg-gray-200 px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" required><button type="submit" class="rounded-r-md bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600">Subscribe</button></form>
         </div>
       </div>
-    </footer>
-
-    <script>
-      document
-        .getElementById("menu-toggle")
-        .addEventListener("click", function () {
-          document.getElementById("mobile-menu").classList.toggle("hidden");
-        });
-
-      document
-        .getElementById("user-menu-button")
-        .addEventListener("click", function () {
-          document.getElementById("user-menu").classList.toggle("hidden");
-        });
-
-      // Close the dropdown when clicking outside
-      window.addEventListener("click", function (e) {
-        if (!document.getElementById("user-menu-button").contains(e.target)) {
-          document.getElementById("user-menu").classList.add("hidden");
-        }
-      });
-    </script>
-  </body>
+      <div class="mt-12 border-t border-gray-700 pt-8 text-center text-sm text-gray-400">&copy; 2026 MyManager. All rights reserved.</div>
+    </div>
+  </footer>
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    navToggle?.addEventListener('click', () => { mobileNav.classList.toggle('hidden'); navToggle.setAttribute('aria-expanded', String(!mobileNav.classList.contains('hidden'))); });
+    window.setTimeout(() => document.querySelectorAll('.message-box').forEach(el => { el.style.opacity = '0'; window.setTimeout(() => el.remove(), 300); }), 3200);
+  </script>
+</body>
 </html>

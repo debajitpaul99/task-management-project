@@ -169,7 +169,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 FRONTEND_URL = 'http://127.0.0.1:8000/'
 
 LOGIN_URL = "/users/sign_in/"
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.UserProfile"

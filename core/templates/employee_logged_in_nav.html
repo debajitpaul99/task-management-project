@@ -20,7 +20,7 @@
   </li>
 
   <li>
-    <a href="{% url "manager-dashboard" %}" class="hover:text-blue-600 transition">
+    <a href="{% url "dashboard" %}" class="hover:text-blue-600 transition">
       View Tasks
     </a>
   </li>
@@ -72,9 +72,9 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden md:hidden pb-4">
       <ul class="space-y-3 text-gray-700 font-medium">
-        <li><a href="{% url "manager-dashboard" %}" class="block hover:text-blue-600">Dashboard</a></li>
+        <li><a href="{% url "dashboard" %}" class="block hover:text-blue-600">Dashboard</a></li>
         <li><a href="{% url "view-projects" %}" class="block hover:text-blue-600">View Projects</a></li>
-        <li><a href="{% url "manager-dashboard" %}" class="block hover:text-blue-600">View Tasks</a></li>
+        <li><a href="{% url "dashboard" %}" class="block hover:text-blue-600">View Tasks</a></li>
       </ul>
     </div>
 
