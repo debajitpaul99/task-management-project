@@ -92,22 +92,149 @@
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </nav>
-    <div id="mobile-nav" class="hidden border-t border-slate-100 bg-white px-5 py-5 md:hidden">
-      <div class="mx-auto flex max-w-7xl flex-col gap-2 text-sm font-semibold">
+    <!-- Mobile Navigation -->
+<div id="mobile-nav"
+     class="hidden border-t border-slate-100 bg-white px-5 py-5 md:hidden">
+
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 text-sm font-semibold">
+
         {% if request.user.is_authenticated %}
-          {% if request.user|group:"Admin" %}<a href="{% url 'admin-dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-violet-50">Control center</a><a href="{% url 'show-groups' %}" class="rounded-xl px-3 py-2.5 hover:bg-violet-50">Roles</a>{% elif request.user|group:"Manager" %}<a href="{% url 'dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-brand-50">Overview</a><a href="{% url 'create-task' %}" class="rounded-xl px-3 py-2.5 hover:bg-brand-50">Create task</a>{% elif request.user|group:"Employee" %}<a href="{% url 'dashboard' %}" class="rounded-xl px-3 py-2.5 hover:bg-sky-50">My work</a>{% endif %}
-          {% if not request.user|group:"User" %}<a href="{% url 'view-projects' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Projects</a>{% endif %}
-          <a href="{% url 'user-profile' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Profile</a>
-          <form method="post" action="{% url 'sign-out' %}">{% csrf_token %}<button class="w-full rounded-xl px-3 py-2.5 text-left text-rose-600 hover:bg-rose-50">Log out</button></form>
+
+            {% if request.user|group:"Admin" %}
+
+                <a href="{% url 'admin-dashboard' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'show-groups' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Role Control
+                </a>
+
+                <a href="{% url 'create-group' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Create Role
+                </a>
+
+                <a href="{% url 'create-task' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Create Task
+                </a>
+
+                <a href="{% url 'create-project' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Create Project
+                </a>
+
+                <a href="{% url 'view-projects' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Projects
+                </a>
+
+                <a href="{% url 'dashboard' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-violet-50 hover:text-violet-700">
+                    Tasks
+                </a>
+
+            {% elif request.user|group:"Manager" %}
+
+                <a href="{% url 'dashboard' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
+                    Tasks
+                </a>
+
+                <a href="{% url 'view-projects' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
+                    Projects
+                </a>
+
+                <a href="{% url 'create-task' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
+                    Create Task
+                </a>
+
+                <a href="{% url 'create-project' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-brand-50 hover:text-brand-700">
+                    Create Project
+                </a>
+
+            {% elif request.user|group:"Employee" %}
+
+                <a href="{% url 'dashboard' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-sky-50 hover:text-sky-700">
+                    Tasks
+                </a>
+
+                <a href="{% url 'view-projects' %}"
+                   class="rounded-xl px-3 py-2.5 transition hover:bg-sky-50 hover:text-sky-700">
+                    Projects
+                </a>
+
+            {% endif %}
+
+
+            <!-- Divider -->
+            <div class="my-2 border-t border-slate-100"></div>
+
+
+            <!-- Profile -->
+            <a href="{% url 'user-profile' %}"
+               class="rounded-xl bg-emerald-50 px-3 py-2.5
+                      text-emerald-700 transition hover:bg-emerald-100">
+                Profile
+            </a>
+
+
+            <!-- Logout -->
+            <form method="post" action="{% url 'sign-out' %}">
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="w-full rounded-xl bg-emerald-600 px-3 py-2.5
+                               text-center font-semibold text-white
+                               transition hover:bg-emerald-700">
+                    Log out
+                </button>
+            </form>
+
+
         {% else %}
-          <a href="{% url 'home' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Home</a>
-          <a href="{% url 'home-feature' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Features</a>
-          <a href="{% url 'home-contact' %}" class="rounded-xl px-3 py-2.5 hover:bg-slate-50">Contact</a>
-          <a href="{% url 'sign-in' %}" class="mt-2 rounded-xl border border-slate-200 px-3 py-2.5 text-center">Sign in</a>
-          <a href="{% url 'sign-up' %}" class="rounded-xl bg-ink px-3 py-2.5 text-center text-white">Get started</a>
+
+            <a href="{% url 'home' %}"
+               class="rounded-xl px-3 py-2.5 transition hover:bg-slate-50">
+                Home
+            </a>
+
+            <a href="{% url 'home-feature' %}"
+               class="rounded-xl px-3 py-2.5 transition hover:bg-slate-50">
+                Features
+            </a>
+
+            <a href="{% url 'home-contact' %}"
+               class="rounded-xl px-3 py-2.5 transition hover:bg-slate-50">
+                Contact
+            </a>
+
+            <div class="my-2 border-t border-slate-100"></div>
+
+            <a href="{% url 'sign-in' %}"
+               class="rounded-xl border border-slate-200 px-3 py-2.5
+                      text-center transition hover:bg-slate-50">
+                Sign in
+            </a>
+
+            <a href="{% url 'sign-up' %}"
+               class="rounded-xl bg-ink px-3 py-2.5
+                      text-center text-white transition hover:bg-brand-700">
+                Sign Up
+            </a>
+
         {% endif %}
-      </div>
+
     </div>
+
+</div>
   </header>
 
   <main class="min-h-[calc(100vh-72px)] bg-emerald-50">
