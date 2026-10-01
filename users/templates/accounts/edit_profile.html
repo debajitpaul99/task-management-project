@@ -3,57 +3,153 @@
 
 <div class="min-h-screen bg-emerald-50 flex items-center justify-center px-4 py-10">
 
-    <div class="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 sm:p-8">
+    <div class="w-full max-w-3xl bg-white border border-emerald-100 shadow-lg rounded-2xl overflow-hidden">
 
-        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+        <!-- Form -->
+        <form method="POST"
+              enctype="multipart/form-data"
+              class="px-6 sm:px-8 py-6 space-y-5">
+
             {% csrf_token %}
 
+
             <!-- Profile Image -->
-            <div>
-                
+            <div class="flex flex-col items-center text-center">
+
+                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                    Profile Photo
+                </label>
+
+                <div class="flex items-center gap-5">
+
+                    <!-- Current Image -->
+                    <div class="shrink-0">
+
+                        {% if user.profile_image %}
+
+                            <img
+                                src="{{ user.profile_image.url }}"
+                                alt="Profile photo"
+                                class="w-20 h-20 rounded-full object-cover border-4 border-emerald-50 shadow-sm"
+                            >
+
+                        {% else %}
+
+                            <!-- Default Avatar -->
+                            <div class="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-2xl font-bold text-emerald-700">
+                                {{ user.first_name|first|default:user.username|first|upper }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Upload -->
+                    <div class="flex-1">
+
+                        <input
+                            type="file"
+                            name="profile_image"
+                            accept="image/*"
+                            class="block w-full text-sm text-gray-500
+                                   file:mr-4 file:rounded-lg file:border-0
+                                   file:bg-emerald-50 file:px-4 file:py-2
+                                   file:text-sm file:font-semibold
+                                   file:text-emerald-700
+                                   hover:file:bg-emerald-100
+                                   file:cursor-pointer"
+                        >
+
+                        <p class="mt-2 text-xs text-gray-400">
+                            Choose a new image to update your profile photo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Clear Image -->
                 {% if user.profile_image %}
-                    <img src="{{ user.profile_image.url }}"
-                         class="w-24 h-24 rounded-full object-cover mx-auto mb-3">
+                <label class="mt-4 inline-flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+
+                    <input
+                        type="checkbox"
+                        name="profile_image-clear"
+                        class="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                    >
+
+                    Remove current profile photo
+
+                </label>
                 {% endif %}
 
-                <input type="file"
-                       name="profile_image"
-                       class="block w-full text-sm text-gray-600 mb-2">
-
-                <!-- Clear Checkbox -->
-                <label class="inline-flex text-sm text-gray-600">
-                    <input type="checkbox" name="profile_image-clear" class="mr-2">
-                    Clear Image
-                </label>
             </div>
+
+
+            <!-- Divider -->
+            <div class="border-t border-gray-100"></div>
+
 
             <!-- Other Fields -->
             {% for field in form %}
+
                 {% if field.name != "profile_image" %}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ field.label }}
-                    </label>
 
-                    {{ field }}
+                    <div>
 
-                    {% if field.errors %}
-                    <p class="text-sm text-red-600 mt-1">
-                        {{ field.errors|striptags }}
-                    </p>
-                    {% endif %}
-                </div>
+                        <label
+                            for="{{ field.id_for_label }}"
+                            class="block text-sm font-semibold text-gray-700 mb-1.5"
+                        >
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <p class="mt-1 text-xs text-gray-400">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <p class="mt-1.5 text-sm font-medium text-red-600">
+                                {{ field.errors|striptags }}
+                            </p>
+                        {% endif %}
+
+                    </div>
+
                 {% endif %}
+
             {% endfor %}
 
-            <!-- Submit -->
-            <button type="submit"
-                class="w-full py-2.5 sm:py-3 rounded-lg text-white font-semibold
-                       bg-gradient-to-r from-emerald-500 to-green-600
-                       hover:from-green-600 hover:to-emerald-500
-                       transition shadow-md">
-                Submit
-            </button>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 pt-2">
+
+                <a
+                    href="{% url 'user-profile' %}"
+                    class="flex-1 rounded-xl border border-gray-200 px-4 py-2.5
+                           text-center text-sm font-semibold text-gray-600
+                           transition hover:bg-gray-50"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="flex-1 rounded-xl bg-emerald-600 px-4 py-2.5
+                           text-sm font-semibold text-white shadow-sm
+                           transition hover:bg-emerald-700
+                           focus:outline-none focus:ring-4 focus:ring-emerald-100"
+                >
+                    Save Changes
+                </button>
+
+            </div>
 
         </form>
 
